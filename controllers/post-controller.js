@@ -62,3 +62,38 @@ const postController = {
       })
       .catch(err => res.json(err));
   },
+
+// U P D A T E  P O S T
+ updatePost({ params, body }, res) {
+    Post.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+      .then(dbPostData => {
+        if (!dbPostData) {
+          res.status(404).json({ message: "No post to update with this ID" });
+          return;
+        }
+        res.json(dbPostData);
+      })
+      .catch(err => res.json(err));
+  },
+
+
+// R E A C T I O N  A C T I O N S
+
+// A D D  A  R E A C T I O N 
+ addReaction({params, body}, res) {
+    Post.findOneAndUpdate(
+      {_id: params.postId}, 
+      {$push: {reactions: body}}, 
+      {new: true, runValidators: true})
+    .populate({path: 'reactions', select: '-__v'})
+    .select('-__v')
+    .then(dbPostData => {
+        if (!dbPostData) {
+            res.status(404).json({message: "No reaction found with post ID"});
+            return;
+        }
+        res.json(dbPostData);
+    })
+    .catch(err => res.status(400).json(err))
+},
+
