@@ -19,38 +19,38 @@ const userController = {
       });
   },
 
-// G E T  A  U S E R  B Y  I D
-getUserById({ params }, res) {
+  // G E T  A  U S E R  B Y  I D
+  getUserById({ params }, res) {
     User.findOne({ _id: params.id })
       .populate({
-        path: 'posts',
-        select: '-__v'
+        path: "posts",
+        select: "-__v",
       })
       .populate({
-        path: 'friends',
-        select: '-__v'
+        path: "friends",
+        select: "-__v",
       })
-      .then(dbUserData => {
+      .then((dbUserData) => {
         if (!dbUserData) {
           res.status(404).json({ message: "This ID does not match any user" });
           return;
         }
         res.json(dbUserData);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         res.sendStatus(400);
       });
   },
 
-// C R E A T E  A  U S E R
-createUser({ body }, res) {
+  // C R E A T E  A  U S E R
+  createUser({ body }, res) {
     User.create(body)
-      .then(dbUserData => res.json(dbUserData))
-      .catch(err => res.json(err));
+      .then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.json(err));
   },
-// D E L E T E  A  U S E R
- deleteUser({ params }, res) {
+  // D E L E T E  A  U S E R
+  deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
       .then((dbUserData) => {
         if (!dbUserData) {
@@ -59,14 +59,13 @@ createUser({ body }, res) {
         }
         res.json(dbUserData);
       })
-      .catch(err => res.json(err));
+      .catch((err) => res.json(err));
   },
 
+  // U P D A T E  A  U S E R
 
-// U P D A T E  A  U S E R
+  // A D D  A  F R I E N D
 
-// A D D  A  F R I E N D
-
-// D E L E T E  A  F R I E N D
-
+  // D E L E T E  A  F R I E N D
+};
 module.exports = userController;

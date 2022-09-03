@@ -43,7 +43,7 @@ const postController = {
           { new: true }
         );
       })
-            .then(dbPostData => {
+      .then(dbPostData => {
         if(!dbPostData) {
           res.sendStatus(404).json({message: "No post with this ID"});
           return;
@@ -56,7 +56,7 @@ const postController = {
   
   // D E L E T E  P O S T
  deletePost({ params }, res) {
-    Thought.findOneAndDelete({ _id: params.id })
+    Post.findOneAndDelete({ _id: params.id })
       .then(dbPostData => {
         if (!dbPostData) {
           res.status(404).json({ message: 'No post to delete from this ID' });
