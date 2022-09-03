@@ -1,7 +1,8 @@
 const { Post, User } = require("../models");
 
+// P O S T  A C T I O N S
 const postController = {
-
+  // G E T  A L L  P O S T S
   getAllPosts(req, res) {
     Post.find({})
       .populate({
@@ -29,3 +30,13 @@ const postController = {
             res.sendStatus(400);
         });
     },
+  // C R E A T E  A  P O S T
+  createPost({ body }, res) {
+    Thought.create(body)
+      .then (({ _id }) => {
+        return User.findOneAndUpdate(
+          { _id: body.userId},
+          {$push: { posts: _id }},
+          { new: true }
+        );
+      })
