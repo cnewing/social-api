@@ -1,6 +1,7 @@
 const { Post, User } = require("../models");
 
 // P O S T  A C T I O N S
+
 const postController = {
   // G E T  A L L  P O S T S
   getAllPosts(req, res) {
@@ -16,6 +17,7 @@ const postController = {
         res.sendStatus(400);
       });
   },
+
   // G E T  A  P O S T  B Y  I D
   getPostById({ params }, res) {
     Post.findOne({ _id: params.id })
@@ -30,6 +32,7 @@ const postController = {
             res.sendStatus(400);
         });
     },
+
   // C R E A T E  A  P O S T
   createPost({ body }, res) {
     Thought.create(body)
@@ -50,6 +53,7 @@ const postController = {
         
       .catch(err => res.json(err));
   },
+  
   // D E L E T E  P O S T
  deletePost({ params }, res) {
     Thought.findOneAndDelete({ _id: params.id })
@@ -76,7 +80,6 @@ const postController = {
       .catch(err => res.json(err));
   },
 
-
 // R E A C T I O N  A C T I O N S
 
 // A D D  A  R E A C T I O N 
@@ -97,3 +100,16 @@ const postController = {
     .catch(err => res.status(400).json(err))
 },
 
+// D E L E T E  R E A C T I O N
+ deleteReaction({ params }, res) {
+    Post.findOneAndUpdate(
+      { _id: params.postId },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { new: true }
+    )
+      .then((dbPostData) => res.json(dbPostData))
+      .catch((err) => res.json(err));
+  },
+};
+
+module.exports = postController;
