@@ -40,3 +40,25 @@ const postController = {
           { new: true }
         );
       })
+            .then(dbPostData => {
+        if(!dbPostData) {
+          res.sendStatus(404).json({message: "No post with this ID"});
+          return;
+        }
+        res.json(dbPostData)
+      })
+        
+      .catch(err => res.json(err));
+  },
+  // D E L E T E  P O S T
+ deletePost({ params }, res) {
+    Thought.findOneAndDelete({ _id: params.id })
+      .then(dbPostData => {
+        if (!dbPostData) {
+          res.status(404).json({ message: 'No post to delete from this ID' });
+          return;
+        }
+        res.json(dbPostData);
+      })
+      .catch(err => res.json(err));
+  },
