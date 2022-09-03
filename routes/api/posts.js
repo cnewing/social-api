@@ -10,3 +10,12 @@ const {
   addReaction,
   deleteReaction,
 } = require("../../controllers/post-controller");
+router.route("/").get(getAllPosts).post(createPost);
+
+router.route("/:id").get(getPostById).put(updatePost).delete(deletePost);
+
+router.route("/:postId/reactions").post(addReaction);
+
+router.route("/:postId/reactions/:reactionId").delete(deleteReaction);
+
+module.exports = router;
