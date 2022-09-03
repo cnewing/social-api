@@ -20,6 +20,28 @@ const userController = {
   },
 
 // G E T  A  U S E R  B Y  I D
+getUserById({ params }, res) {
+    User.findOne({ _id: params.id })
+      .populate({
+        path: 'posts',
+        select: '-__v'
+      })
+      .populate({
+        path: 'friends',
+        select: '-__v'
+      })
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: "This ID does not match any user" });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(400);
+      });
+  },
 
 // C R E A T E  A  U S E R
 
