@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 // U S E R  S C H E M A
 const userSchema = new Schema({
-    const userSchema = new Schema({
+
   username: {
     type: String,
     required: true,
@@ -29,5 +29,10 @@ const userSchema = new Schema({
         }
     ]
 },
-});
+{
+    toJSON: {
+        virtuals: true
+    },
+    id: false
+}
 // F R I E N D  C O U N T
