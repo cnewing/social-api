@@ -63,9 +63,51 @@ const userController = {
   },
 
   // U P D A T E  A  U S E R
-
+  updateUser({ params, body }, res) {
+    User.findOneAndUpdate({ _id: params.id }, body, {
+      new: true,
+      runValidators: true,
+    })
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res.status(404).json({ message: "No user found" });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.json(err));
+  },
   // A D D  A  F R I E N D
-
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $push: { friends: params.friendsId } },
+      { new: true }
+    )
+      .then((dbUserData) => {
+          if (!dbUserData) {
+          res.status(404).json({ message: "No user found" });
+          return;
+        }
+        res.json(dbUserData));
+      }),
+      .catch((err) => res.status(400).json(err));
+  },
   // D E L E T E  A  F R I E N D
-};
+ deleteFriend ({ params }, res) => {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendsId } },
+      { new: true }
+    )
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'Cannot delete friend! ID does not match!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.status(400).json(err));
+    });
+
 module.exports = userController;
