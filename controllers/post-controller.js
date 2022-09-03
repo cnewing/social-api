@@ -35,7 +35,7 @@ const postController = {
 
   // C R E A T E  A  P O S T
   createPost({ body }, res) {
-    Thought.create(body)
+    Post.create(body)
       .then (({ _id }) => {
         return User.findOneAndUpdate(
           { _id: body.userId},
